@@ -1,4 +1,4 @@
-exports.constructMessage = (data) => {
+exports.constructTrackInfoMessage = (data) => {
     const { album, artistsNames, title, playlistName, playlistUrl } = data;
     console.log(data);
     console.log(album, artistsNames, title, playlistName, playlistUrl);
@@ -16,4 +16,8 @@ exports.constructMessage = (data) => {
 
         return message;
     }
+};
+
+exports.constructNoTrackPlayedMessage = () => {
+    return "Currently, you are not playing any song";
 };

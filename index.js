@@ -30,16 +30,47 @@ botClient.onText(/\/update/, async (msg) => {
         const result = await axios.get(`${spotifyBotHost}/played_song`);
         const status = result.status;
         const { data } = result;
+        console.log(status);
 
-        const message = utils.constructMessage(data);
+        if (status === 200) {
+            const message = utils.constructTrackInfoMessage(data);
 
-        botClient.sendMessage(chatId, message);
+            botClient.sendMessage(chatId, message);
+        } else {
+            const message = utils.constructNoTrackPlayedMessage();
+
+            botClient.sendMessage(chatId, message);
+        }
     } catch (error) {
-        console.log(error);
-        botClient.sendMessage(
-            chatId,
-            "Ups, somethong went wrong, please try again"
-        );
+        const { status } = error.response;
+        const setupUrl =
+            nodeEnv !== "developmet"
+                ? "https://google.com"
+                : `${spotifyBotHost}/login`;
+
+        if (status === 422) {
+            botClient.sendMessage(
+                chatId,
+                "Looks like your environment not yet ready, you know what to do :)",
+                {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: "Setup Environment",
+                                    url: setupUrl,
+                                },
+                            ],
+                        ],
+                    },
+                }
+            );
+        } else {
+            botClient.sendMessage(
+                chatId,
+                "Ups, somethong went wrong, please try again"
+            );
+        }
     }
 });
 
