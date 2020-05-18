@@ -17,7 +17,7 @@ botClient.onText(/\/update/, async (msg) => {
         "Okay, will send your request to Spotify Bot service"
     );
 
-    await handler.handleUpdate(botClient);
+    await handler.handleUpdate(botClient, chatId);
 });
 
 botClient.on("polling_error", (error) => {
