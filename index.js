@@ -2,21 +2,39 @@ process.env["NTBA_FIX_319"] = 1;
 require("dotenv").config();
 
 const axios = require("axios");
+const bodyParser = require("body-parser");
+const express = require("express");
 const nodeEnv = process.env.NODE_ENV;
+const port = process.env.PORT || 4000;
 const spotifyBotHost = process.env.SPOTIFY_BOT_HOST;
 const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TELEGRAM_TOKEN;
 const utils = require("./utils");
 
+const app = express();
+
+app.use(bodyParser.json());
+
+app.listen(port);
+
+const setupWebhook = async (token) => {
+    await botClient.setWebHook("http://localhost:5000/" + token);
+};
+
 let botClient;
 
 if (nodeEnv === "production") {
     botClient = new TelegramBot(token);
-    botClient.setWebHook(process.env.HEROKU_URL + botClient.token);
+    setupWebhook();
 } else {
     console.log(token);
     botClient = new TelegramBot(token, { polling: true });
 }
+
+app.post("/" + token, (req, res) => {
+    botClient.processUpdate(req.body);
+    return res.status(200);
+});
 
 botClient.onText(/\/update/, async (msg) => {
     const chatId = msg.chat.id;
