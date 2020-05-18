@@ -6,6 +6,7 @@ const handler = require("./handler");
 const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TELEGRAM_TOKEN;
 const url = process.env.APP_HOST;
+const port = process.env.PORT || 4000;
 
 const app = express();
 app.use(express.json());
@@ -33,4 +34,12 @@ botClient.onText(/\/update/, async (msg) => {
 
 botClient.on("polling_error", (error) => {
     console.log(error); // => 'EFATAL'
+});
+
+botClient.on("message", (msg) => {
+    botClient.sendMessage(msg.chat.id, "I am alive!");
+});
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
 });
