@@ -1,13 +1,24 @@
 process.env["NTBA_FIX_319"] = 1;
 require("dotenv").config();
 
+const express = require("express");
+const handler = require("./handler");
 const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TELEGRAM_TOKEN;
-const handler = require("./handler");
+const url = process.env.APP_HOST;
+
+const app = express();
+app.use(express.json());
 
 let botClient;
 
-botClient = new TelegramBot(token, { polling: true });
+botClient = new TelegramBot(token);
+botClient.setWebHook(`${url}/bot${token}`);
+
+app.post(`/bot${token}`, (req, res) => {
+    botClient.processUpdate(req.body);
+    res.sendStatus(200);
+});
 
 botClient.onText(/\/update/, async (msg) => {
     const chatId = msg.chat.id;
