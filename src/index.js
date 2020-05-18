@@ -36,7 +36,7 @@ botClient.on("polling_error", (error) => {
     console.log(error); // => 'EFATAL'
 });
 
-botClient.on("message", (msg) => {
+botClient.onText(/\/ping/, (msg) => {
     botClient.sendMessage(msg.chat.id, "I am alive!");
 });
 
