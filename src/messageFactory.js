@@ -1,4 +1,4 @@
-exports.constructTrackInfoMessage = (data) => {
+exports.createTrackInfoMessage = (data) => {
     const {
         album,
         albumUrl,
@@ -32,6 +32,21 @@ exports.constructTrackInfoMessage = (data) => {
     }
 };
 
-exports.constructNoTrackPlayedMessage = () => {
+exports.createNoTrackPlayedMessage = () => {
     return "Currently, you are not playing any song";
+};
+
+exports.createSetupEnvironmentActionMessage = (setupUrl) => {
+    return {
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    {
+                        text: "Setup Environment",
+                        url: setupUrl,
+                    },
+                ],
+            ],
+        },
+    };
 };
