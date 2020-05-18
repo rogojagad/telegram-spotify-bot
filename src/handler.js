@@ -4,7 +4,7 @@ const axios = require("axios");
 const messageFactory = require("./messageFactory");
 const spotifyBotHost = process.env.SPOTIFY_BOT_HOST;
 
-exports.handleUpdate = async () => {
+exports.handleUpdate = async (botClient) => {
     try {
         const result = await axios.get(`${spotifyBotHost}/played_song`);
         const status = result.status;
