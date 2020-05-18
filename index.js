@@ -18,20 +18,21 @@ app.use(bodyParser.json());
 app.listen(port);
 
 const setupWebhook = async (token) => {
-    await botClient.setWebHook("http://localhost:5000/" + token);
+    await botClient.setWebHook(process.env.HEROKU_URL + token);
 };
 
 let botClient;
 
 if (nodeEnv === "production") {
     botClient = new TelegramBot(token);
-    setupWebhook();
+    botClient.setWebHook(process.env.HEROKU_URL + token);
 } else {
     console.log(token);
     botClient = new TelegramBot(token, { polling: true });
 }
 
 app.post("/" + token, (req, res) => {
+    console.log("a");
     botClient.processUpdate(req.body);
     return res.status(200);
 });
@@ -60,6 +61,7 @@ botClient.onText(/\/update/, async (msg) => {
             botClient.sendMessage(chatId, message);
         }
     } catch (error) {
+        console.log(error);
         const { status } = error.response;
         const setupUrl =
             nodeEnv !== "developmet"
