@@ -1,7 +1,21 @@
 exports.constructTrackInfoMessage = (data) => {
-    const { album, artistsNames, title, playlistName, playlistUrl } = data;
+    const {
+        album,
+        albumUrl,
+        artistsNames,
+        title,
+        playlistName,
+        playlistUrl,
+    } = data;
     console.log(data);
-    console.log(album, artistsNames, title, playlistName, playlistUrl);
+    console.log(
+        album,
+        artistsNames,
+        albumUrl,
+        title,
+        playlistName,
+        playlistUrl
+    );
 
     let message = "Now Playing:\n";
     message += title + " - " + artistsNames + "\n\n";

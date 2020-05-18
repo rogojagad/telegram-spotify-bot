@@ -23,13 +23,7 @@ const setupWebhook = async (token) => {
 
 let botClient;
 
-if (nodeEnv === "production") {
-    botClient = new TelegramBot(token);
-    botClient.setWebHook(process.env.HEROKU_URL + token);
-} else {
-    console.log(token);
-    botClient = new TelegramBot(token, { polling: true });
-}
+botClient = new TelegramBot(token, { polling: true });
 
 app.post("/" + token, (req, res) => {
     console.log("a");
