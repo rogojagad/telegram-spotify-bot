@@ -8,14 +8,6 @@ const token = process.env.TELEGRAM_TOKEN;
 const url = process.env.APP_HOST;
 const port = process.env.PORT || 4000;
 
-const app = express();
-setupApp(app);
-
-const botClient = new TelegramBot(token);
-botClient.setWebHook(`${url}/bot${token}`);
-
-botBootstraper.bootstrap(botClient);
-
 const setupApp = (app) => {
     app.use(express.json());
 
@@ -28,3 +20,11 @@ const setupApp = (app) => {
         console.log(`Listening on port ${port}`);
     });
 };
+
+const app = express();
+setupApp(app);
+
+const botClient = new TelegramBot(token);
+botClient.setWebHook(`${url}/bot${token}`);
+
+botBootstraper.bootstrap(botClient);
